@@ -2,6 +2,8 @@
 import argparse
 from pathlib import Path
 import pandas as pd
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from workforce_intelligence.model_comparison import compare_models, save_comparison
 
 def main():
