@@ -56,3 +56,11 @@ The legacy app uses fixed default feature values and heuristic explanations. Its
 See [roadmap](docs/ROADMAP.md), [technical audit](docs/TECHNICAL_AUDIT.md), [data architecture](docs/DATA_ARCHITECTURE.md) and [model validation plan](docs/MODEL_VALIDATION_PLAN.md).
 
 Pull requests should pass the GitHub Actions quality checks before merging.
+
+## Reproducible research baseline
+
+```bash
+python scripts/evaluate_baseline.py
+```
+
+This writes `data/baseline_metrics.json` locally. The baseline uses a fixed feature whitelist, 60/20/20 stratified splits, train-only preprocessing, validation-only threshold tuning, and untouched test evaluation. It intentionally uses class-weighted logistic regression rather than the legacy SMOTEENN pipeline. Reported metrics must be read from a completed run; no improvement is claimed.
