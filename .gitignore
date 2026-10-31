@@ -8,3 +8,6 @@ __pycache__/
 .coverage
 htmlcov/
 mlruns/
+
+/data/*.db
+/data/*.sqlite*
