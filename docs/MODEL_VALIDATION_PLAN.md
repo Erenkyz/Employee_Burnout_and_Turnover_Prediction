@@ -11,3 +11,6 @@
 
 ## Current status
 Existing README metrics are historical claims and have **not** been independently reproduced. Existing model artifacts remain untouched. V2 dashboard deliberately excludes individual-level predictions until these checks pass.
+
+## V2 baseline implementation
+`python scripts/evaluate_baseline.py` creates a local JSON metrics report using a 60/20/20 stratified split, train-only preprocessing, validation-only threshold selection, and an untouched test set. This is a new comparison baseline, **not** reproduction of the original notebook. The original notebook's leakage status remains unverified.
