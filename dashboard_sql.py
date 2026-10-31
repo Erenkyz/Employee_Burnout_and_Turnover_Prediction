@@ -49,8 +49,8 @@ else:
         px.bar(groups, x="segment", y="attrition_rate",
                hover_data=["employees", "departures"],
                labels={"segment": dimension, "attrition_rate": "Attrition rate"}),
-        use_container_width=True,
+        width="stretch",
     )
-    st.dataframe(groups, use_container_width=True, hide_index=True)
+    st.dataframe(groups, width="stretch", hide_index=True)
 st.caption("Groups below the threshold are hidden. Aggregate associations are not causal; "
            "this dataset is not suitable for decisions about individual workers.")
