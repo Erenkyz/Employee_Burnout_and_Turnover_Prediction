@@ -79,6 +79,7 @@ with overview_tab:
             px.bar(dept, x="segment", y="attrition_rate",
                    hover_data=["employees", "departures"],
                    labels={"segment": "Department", "attrition_rate": "Attrition rate"}),
+            key="overview_department_chart",
             width="stretch",
         )
     st.caption("Associations are descriptive and do not establish causality.")
@@ -93,6 +94,7 @@ with segments_tab:
             px.bar(groups, x="segment", y="attrition_rate",
                    hover_data=["employees", "departures"],
                    labels={"segment": dimension, "attrition_rate": "Attrition rate"}),
+            key="sql_explorer_segment_chart",
             width="stretch",
         )
         st.dataframe(groups, width="stretch", hide_index=True)
