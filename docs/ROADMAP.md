@@ -5,9 +5,9 @@
 - [x] Basic data-quality and aggregated analytics modules
 - [x] Test suite and CI definition
 - [ ] Reproduce baseline ML evaluation and audit leakage
-- [ ] Add ingestion and SQL warehouse layer
-- [ ] Add SQL-based KPI and business metrics
-- [ ] Refactor Streamlit into multi-page dashboard
+- [x] Add ingestion and SQL warehouse layer (SQLite first; PostgreSQL pending)
+- [x] Add SQL-based department attrition KPI (additional business metrics pending)
+- [ ] Refactor Streamlit into multi-page dashboard (initial V2 dashboard created)
 - [ ] Add model calibration, explanations and experiment tracking
 - [ ] Add scenario analysis with explicit assumptions
 - [ ] Add Docker, integration tests and end-user documentation
@@ -17,3 +17,9 @@
 - [x] Add warehouse round-trip and invalid-target tests
 - [ ] Run CI and verify results
 - [ ] Migrate warehouse backend to PostgreSQL
+
+## Delivery 3
+- [x] Initial aggregate Streamlit dashboard
+- [x] Public CSV integration test
+- [x] ML validation gate document
+- [x] Updated README with correct commands
