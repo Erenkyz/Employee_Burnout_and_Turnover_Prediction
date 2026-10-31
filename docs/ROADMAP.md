@@ -23,3 +23,8 @@
 - [x] Public CSV integration test
 - [x] ML validation gate document
 - [x] Updated README with correct commands
+
+## Delivery 4
+- [x] Add reproducible class-weighted logistic research baseline and tests
+- [ ] Run baseline on full CSV and record actual metrics
+- [ ] Inspect legacy notebook for leakage and reproduce original SMOTEENN evaluation
