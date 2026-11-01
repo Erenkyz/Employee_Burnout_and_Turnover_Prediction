@@ -22,6 +22,10 @@ st.set_page_config(
 )
 st.title("Workforce Intelligence Platform")
 st.caption("Data Engineering · SQL Analytics · Model Validation")
+st.markdown("""<style>
+.block-container {max-width: 1380px; padding-top: 2rem; padding-bottom: 3rem;}
+div[data-testid="stMetric"] {background: rgba(120,140,170,.08); border: 1px solid rgba(140,160,190,.18); border-radius: 14px; padding: 1rem;}
+</style>""", unsafe_allow_html=True)
 st.info("Portfolio demonstration using the public IBM HR dataset. "
         "Not validated for employment decisions or clinical burnout assessment.")
 
@@ -63,6 +67,8 @@ with st.sidebar:
     )
     minimum = st.slider("Minimum group size", 5, 50, 10)
     st.caption("Groups smaller than the threshold are not displayed.")
+    st.divider()
+    st.caption("Public IBM HR demonstration dataset. Group-level historical associations only.")
 
 overview_tab, segments_tab, quality_tab, model_tab = st.tabs(
     ["Overview", "SQL Explorer", "Data Quality", "ML Evaluation"]
@@ -70,16 +76,19 @@ overview_tab, segments_tab, quality_tab, model_tab = st.tabs(
 
 with overview_tab:
     st.subheader("Workforce overview")
+    st.caption("Historical attrition across the full demonstration dataset.")
     a, b, c = st.columns(3)
     a.metric("Records", f"{overview['employees']:,}")
     b.metric("Recorded departures", f"{overview['departures']:,}")
     c.metric("Attrition rate", f"{overview['attrition_rate']:.1%}")
+    st.markdown("#### Department comparison")
     dept = segment_kpis(database, "Department", min_group_size=minimum)
     if not dept.empty:
         st.plotly_chart(
             px.bar(dept, x="segment", y="attrition_rate",
                    hover_data=["employees", "departures"],
-                   labels={"segment": "Department", "attrition_rate": "Attrition rate"}),
+                   labels={"segment": "Department", "attrition_rate": "Attrition rate"},
+                   text="attrition_rate").update_traces(texttemplate="%{text:.1%}", textposition="outside").update_yaxes(tickformat=".0%"),
             key="overview_department_chart",
             width="stretch",
         )
@@ -87,6 +96,7 @@ with overview_tab:
 
 with segments_tab:
     st.subheader(f"SQL explorer — {dimension}")
+    st.caption("Compare historical group-level attrition using the sidebar filters.")
     groups = segment_kpis(database, dimension, min_group_size=minimum)
     if groups.empty:
         st.info("No groups satisfy the minimum size.")
@@ -94,11 +104,17 @@ with segments_tab:
         st.plotly_chart(
             px.bar(groups, x="segment", y="attrition_rate",
                    hover_data=["employees", "departures"],
-                   labels={"segment": dimension, "attrition_rate": "Attrition rate"}),
+                   labels={"segment": dimension, "attrition_rate": "Attrition rate"},
+                   text="attrition_rate").update_traces(texttemplate="%{text:.1%}", textposition="outside").update_yaxes(tickformat=".0%"),
             key="sql_explorer_segment_chart",
             width="stretch",
         )
-        st.dataframe(groups, width="stretch", hide_index=True)
+        st.dataframe(groups, width="stretch", hide_index=True, column_config={
+            "segment": st.column_config.TextColumn("Group"),
+            "employees": st.column_config.NumberColumn("Employees", format="%d"),
+            "departures": st.column_config.NumberColumn("Departures", format="%d"),
+            "attrition_rate": st.column_config.NumberColumn("Attrition rate", format="percent"),
+        })
         st.download_button(
             "Download aggregate CSV",
             groups.to_csv(index=False),
@@ -113,6 +129,7 @@ with quality_tab:
     b.metric("Source columns", f"{quality.columns:,}")
     c.metric("Missing cells", f"{quality.missing_cells:,}")
     st.success("Data quality validation passed.")
+    st.caption("Source schema and quality checks passed before SQLite ingestion.")
     st.caption("Validated source loaded into a local SQLite warehouse. "
                "The warehouse intentionally excludes employee identifiers.")
 
