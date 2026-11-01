@@ -2,7 +2,7 @@
 
 A reproducible portfolio project for **Data Engineering, Data Analytics, Business Analysis and Machine Learning** using the public IBM HR attrition demonstration dataset.
 
-> V2 is deployed as a live demonstration. The original notebook, model artifacts and legacy Streamlit apps remain available. This is a **demo**, not a validated system for real-world employment decisions. Attrition is not a clinical burnout diagnosis.
+> V2 is deployed as a live demonstration. The original research notebook remains available. This is a **demo**, not a validated system for real-world employment decisions. Attrition is not a clinical burnout diagnosis.
 
 ## Live demonstration
 
@@ -49,20 +49,11 @@ Open http://localhost:8501. Stop with `docker compose down`.
 | `scripts/build_warehouse.py` | Reproducible warehouse build command |
 | `tests/` | Unit and dataset integration tests |
 | `docs/` | Audit, architecture, model validation and roadmap |
-| `Project_app.py` | Original legacy prediction demo |
-| `Employee_Burnout_and_Turnover_Prediction.ipynb` | Original modeling notebook |
+| `Employee_Burnout_and_Turnover_Prediction.ipynb` | Original research notebook |
 
-## Legacy model results (not yet independently reproduced)
+## Original research notebook
 
-The original README reported Logistic Regression + SMOTEENN with threshold 0.66, precision 0.45, recall 0.64, and accuracy 0.82 on 294 test observations. Treat these as **historical reported results**, not independently verified V2 performance.
-
-To launch the original demo instead:
-
-```bash
-streamlit run Project_app.py
-```
-
-The legacy app uses fixed default feature values and heuristic explanations. Its employee-level output must not be used for employment decisions.
+The original notebook is retained as a record of the initial modeling work. Historical results from that notebook are not directly comparable with the current V2 evaluation because the feature sets and evaluation procedures differ. The previous employee-level prediction app and its saved artifacts have been removed from the active repository.
 
 ## Development status
 
