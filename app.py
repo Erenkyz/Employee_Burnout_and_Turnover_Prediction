@@ -3,6 +3,7 @@
 Aggregate reporting only; not suitable for individual employment decisions.
 """
 from pathlib import Path
+import json
 import sys
 
 import pandas as pd
@@ -119,20 +120,37 @@ with model_tab:
     st.subheader("ML evaluation — documented experiments")
     st.write("A reproducible class-weighted Logistic Regression baseline and "
              "SMOTEENN comparison were evaluated on held-out data.")
-    metrics_file = ROOT / "data" / "model_comparison_metrics.json"
-    if metrics_file.exists():
-        try:
-            import json
-            metrics = json.loads(metrics_file.read_text(encoding="utf-8"))
-            rows = [
-                {"model": name, **details["test_metrics"]}
-                for name, details in metrics["models"].items()
-            ]
-            st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
-            st.caption("Local experimental results; not independently externally validated.")
-        except (ValueError, KeyError, OSError) as exc:
-            st.warning(f"Could not read local metrics: {exc}")
-    else:
-        st.info("Optional local model metrics not found. Run scripts/compare_models.py "
-                "to generate the research report.")
+    metrics_file = ROOT / "reports" / "model_comparison_demo.json"
+    try:
+        metrics = json.loads(metrics_file.read_text(encoding="utf-8"))
+        rows = [
+            {"Model": name.replace("_", " ").title(),
+             "Average Precision": details["test_metrics"]["average_precision"],
+             "ROC-AUC": details["test_metrics"]["roc_auc"],
+             "F1": details["test_metrics"]["f1"],
+             "Brier": details["test_metrics"]["brier_score"]}
+            for name, details in metrics["models"].items()
+        ]
+        st.dataframe(
+            pd.DataFrame(rows),
+            width="stretch",
+            hide_index=True,
+            column_config={
+                "Average Precision": st.column_config.NumberColumn(format="%.3f"),
+                "ROC-AUC": st.column_config.NumberColumn(format="%.3f"),
+                "F1": st.column_config.NumberColumn(format="%.3f"),
+                "Brier": st.column_config.NumberColumn(format="%.3f"),
+            },
+        )
+        st.caption(
+            "Saved results from a locally executed, single-split experiment "
+            "(882 train / 294 validation / 294 test). Lower Brier is better. "
+            "Results are illustrative, not live predictions."
+        )
+        st.info(
+            "Class-weighted logistic performed better on F1 and ranking metrics "
+            "in this experiment. Its probability calibration remains limited."
+        )
+    except (ValueError, KeyError, OSError, TypeError) as exc:
+        st.warning(f"Model report unavailable: {exc}")
     st.warning("Do not use model outputs to evaluate or make decisions about individual employees.")
