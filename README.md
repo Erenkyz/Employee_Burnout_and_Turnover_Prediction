@@ -1,20 +1,25 @@
-# Workforce Intelligence Platform V2 (in development)
+# Workforce Intelligence Platform
 
 A reproducible portfolio project for **Data Engineering, Data Analytics, Business Analysis and Machine Learning** using the public IBM HR attrition demonstration dataset.
 
-> V2 is under active development. The original notebook, model artifacts and Streamlit app remain available. This is a **demo**, not a validated system for real-world employment decisions. Attrition is not a clinical burnout diagnosis.
+> V2 is deployed as a live demonstration. The original notebook, model artifacts and legacy Streamlit apps remain available. This is a **demo**, not a validated system for real-world employment decisions. Attrition is not a clinical burnout diagnosis.
+
+## Live demonstration
+
+[Open Workforce Intelligence Platform](https://workforce-intelligence-erenkyz.streamlit.app) · [GitHub Actions](https://github.com/Erenkyz/Employee_Burnout_and_Turnover_Prediction/actions)
+
+The live application provides aggregate SQL analytics, data-quality checks, and a versioned ML evaluation report. It does not make individual employee predictions.
 
 ## Quick start (Python 3.11)
 
 ```bash
 git clone https://github.com/Erenkyz/Employee_Burnout_and_Turnover_Prediction.git
 cd Employee_Burnout_and_Turnover_Prediction
-git checkout feature/v2-professional
 python -m venv .venv
 # Activate the environment for your operating system.
 pip install -r requirements-dev.txt
 python -m pytest -q
-streamlit run dashboard_v2.py
+streamlit run app.py
 ```
 
 Build the local SQL warehouse and print department KPIs:
@@ -25,11 +30,19 @@ python scripts/build_warehouse.py
 
 The generated SQLite database is stored at `data/workforce.db` and is git-ignored. No cloud account or paid service is required.
 
+Docker deployment (Docker Desktop required):
+
+```bash
+docker compose up --build -d
+```
+
+Open http://localhost:8501. Stop with `docker compose down`.
+
 ## Repository layout
 
 | Path | Purpose |
 | --- | --- |
-| `dashboard_v2.py` | V2 aggregate analytics Streamlit app |
+| `app.py` | Unified Streamlit platform (overview, SQL analytics, quality and model evaluation) |\n| `reports/model_comparison_demo.json` | Versioned, measured model comparison for deployment |\n| `Dockerfile`, `compose.yaml` | Reproducible container deployment |
 | `src/workforce_intelligence/data_quality.py` | Source data validation |
 | `src/workforce_intelligence/analytics.py` | Aggregate workforce KPIs |
 | `src/workforce_intelligence/warehouse.py` | Privacy-minimized SQLite ETL |
