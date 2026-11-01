@@ -36,7 +36,7 @@ Docker deployment (Docker Desktop required):
 docker compose up --build -d
 ```
 
-Open http://localhost:8501. Stop with `docker compose down`.
+Open http://localhost:8502. Stop with `docker compose down`.
 
 ## Repository layout
 
