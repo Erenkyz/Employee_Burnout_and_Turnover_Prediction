@@ -1,0 +1,51 @@
+{
+  "status": "research_only_not_validated_for_employment_decisions",
+  "source": "Locally executed scripts/compare_models.py, seed 42, shared 60/20/20 split; user-reported measurements",
+  "seed": 42,
+  "split_sizes": {
+    "train": 882,
+    "validation": 294,
+    "test": 294
+  },
+  "models": {
+    "class_weighted_logistic": {
+      "threshold_selected_on_validation": 0.63,
+      "test_metrics": {
+        "average_precision": 0.5175908368741304,
+        "roc_auc": 0.7941252476526833,
+        "brier_score": 0.18364439609820393,
+        "precision": 0.42857142857142855,
+        "recall": 0.6382978723404256,
+        "f1": 0.5128205128205128
+      }
+    },
+    "smoteenn_logistic": {
+      "threshold_selected_on_validation": 0.63,
+      "test_metrics": {
+        "average_precision": 0.469595,
+        "roc_auc": 0.759669,
+        "brier_score": 0.206019,
+        "precision": 0.352273,
+        "recall": 0.659574,
+        "f1": 0.459259
+      }
+    },
+    "dummy_prior": {
+      "threshold_selected_on_validation": null,
+      "test_metrics": {
+        "average_precision": 0.1598639455782313,
+        "roc_auc": 0.5,
+        "brier_score": 0.13430874995500844,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      }
+    }
+  },
+  "limitations": [
+    "Single split, exploratory comparison.",
+    "Class-weighted probabilities are poorly calibrated relative to the dummy Brier score.",
+    "SMOTEENN interpolation of one-hot features can produce invalid synthetic records.",
+    "Not validated for employment decisions."
+  ]
+}
