@@ -1,25 +1,53 @@
-# Data architecture — V2 foundation
+# Data architecture
 
-## Flow
-Public demonstration CSV -> schema and quality checks -> privacy-minimized SQL warehouse -> aggregated department KPIs.
+## Pipeline
 
-## Reproduce
-```bash
-pip install -r requirements-dev.txt
-python scripts/build_warehouse.py
-python -m pytest -q
+```text
+HR-Employee-Attrition.csv
+          |
+          v
+  Data quality checks
+          |
+          v
+   CSV-to-SQLite ETL
+          |
+          v
+  workforce SQL table
+          |
+          v
+ Aggregate SQL queries
+          |
+          v
+  Streamlit dashboard
 ```
 
-The first warehouse backend is SQLite for a zero-cost reproducible local pipeline. PostgreSQL is a later migration target, not a deployed dependency.
+The dashboard also reads a versioned JSON report for the ML Evaluation tab. It does not retrain models when users open the page.
 
 ## Data contract
-- Required identity for source validation: EmployeeNumber (checked for duplicates, never stored).
-- Target: Attrition must be exactly Yes or No.
-- SQL table: workforce, limited to Department, JobRole, OverTime, JobSatisfaction, WorkLifeBalance, YearsAtCompany and left_company.
-- Any missing cell currently blocks warehouse ingestion. Future work should document justified imputation and source-specific policies.
-- Database file is generated locally and must not be committed.
+
+The source validation requires `Attrition`, `EmployeeNumber`, `Department`, and `JobRole`. Employee numbers are checked for duplicates but are not copied into the SQL warehouse. The `Attrition` column accepts `Yes` and `No` only.
+
+The `workforce` table contains `Department`, `JobRole`, `OverTime`, `JobSatisfaction`, `WorkLifeBalance`, `YearsAtCompany`, and the derived `left_company` indicator.
+
+The ETL stops when source validation fails or missing values are found. The SQLite file is generated locally at `data/workforce.db` and is excluded from version control.
+
+## Query layer
+
+The application uses a fixed list of supported grouping dimensions. The selected dimension is checked against this list before it is included in SQL. Minimum group size is passed as a query parameter, and groups below that threshold are omitted.
+
+The interface exposes aggregate metrics, not individual employee records.
+
+## Run the pipeline
+
+```bash
+python -m pip install -r requirements-dev.txt
+python scripts/build_warehouse.py
+python -m pytest -q
+python -m streamlit run app.py
+```
+
+SQLite is the implemented backend. PostgreSQL, scheduled ingestion, and historical snapshots are possible future extensions, not current dependencies.
 
 ## Limitations
-- Original dataset is a static HR attrition demonstration dataset.
-- Department-level aggregates are descriptive, not causal or clinical burnout measurements.
-- SQL warehouse does not yet include time dimensions or historical snapshots.
+
+The source is a static demonstration dataset. The pipeline does not provide ongoing ingestion or historical tracking. Segment-level attrition rates describe associations and cannot establish causes or diagnose burnout.
