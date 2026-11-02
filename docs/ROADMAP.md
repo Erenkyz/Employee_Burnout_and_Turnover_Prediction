@@ -1,30 +1,33 @@
-# Workforce Intelligence V2 roadmap
+# Project status and roadmap
 
-- [x] Isolated development branch
-- [x] Initial technical audit
-- [x] Basic data-quality and aggregated analytics modules
-- [x] Test suite and CI definition
-- [ ] Reproduce baseline ML evaluation and audit leakage
-- [x] Add ingestion and SQL warehouse layer (SQLite first; PostgreSQL pending)
-- [x] Add SQL-based department attrition KPI (additional business metrics pending)
-- [ ] Refactor Streamlit into multi-page dashboard (initial V2 dashboard created)
-- [ ] Add model calibration, explanations and experiment tracking
-- [ ] Add scenario analysis with explicit assumptions
-- [ ] Add Docker, integration tests and end-user documentation
+This document tracks the current Workforce Intelligence Platform and possible next steps. It distinguishes shipped features from work that is still exploratory.
 
-## Delivery 2
-- [x] Add reproducible local SQL warehouse ingestion and departmental KPI query
-- [x] Add warehouse round-trip and invalid-target tests
-- [ ] Run CI and verify results
-- [ ] Migrate warehouse backend to PostgreSQL
+## Implemented
 
-## Delivery 3
-- [x] Initial aggregate Streamlit dashboard
-- [x] Public CSV integration test
-- [x] ML validation gate document
-- [x] Updated README with correct commands
+- [x] Data quality checks for the public IBM HR demonstration dataset
+- [x] CSV-to-SQLite ETL with a limited set of analytical columns
+- [x] SQL-based workforce KPIs and group-level attrition comparisons
+- [x] Streamlit dashboard: Overview, SQL Explorer, Data Quality, ML Evaluation
+- [x] Minimum group-size filtering and aggregate CSV export
+- [x] Reproducible logistic regression baseline and SMOTEENN comparison
+- [x] Saved model comparison report displayed in the dashboard
+- [x] Automated tests and GitHub Actions checks
+- [x] Docker image and Docker Compose setup
+- [x] Public Streamlit deployment and setup documentation
 
-## Delivery 4
-- [x] Add reproducible class-weighted logistic research baseline and tests
-- [ ] Run baseline on full CSV and record actual metrics
-- [ ] Inspect legacy notebook for leakage and reproduce original SMOTEENN evaluation
+## Potential next steps
+
+These are not part of the current deployed application.
+
+- [ ] Add scheduled ingestion and historical snapshots
+- [ ] Evaluate PostgreSQL if the data volume or deployment requirements justify it
+- [ ] Add monitoring for pipeline failures and data drift
+- [ ] Extend aggregate reporting with documented business definitions
+- [ ] Study probability calibration and categorical-aware resampling
+- [ ] Validate model behavior across datasets before considering any operational use
+
+## Scope and limitations
+
+The project is based on a static public demonstration dataset. It is designed to show data engineering, SQL analytics, dashboard development, and experimental model evaluation. Aggregate relationships are descriptive rather than causal. The models are not validated for individual employment decisions or burnout diagnosis.
+
+See [data architecture](DATA_ARCHITECTURE.md), [model comparison](MODEL_COMPARISON_RESULTS.md), and [technical audit](TECHNICAL_AUDIT.md) for details.

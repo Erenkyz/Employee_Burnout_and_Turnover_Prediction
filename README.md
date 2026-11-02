@@ -119,7 +119,7 @@ python -m pytest -q
 python -m streamlit run app.py
 ```
 
-Open **http://localhost:8501**. The application validates the CSV and builds its local SQLite warehouse when needed.
+Open **http://localhost:8502**. The application validates the CSV and builds its local SQLite warehouse when needed.
 
 To build the warehouse separately:
 
