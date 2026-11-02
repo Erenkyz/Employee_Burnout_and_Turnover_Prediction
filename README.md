@@ -168,7 +168,7 @@ See [Docker deployment guide](docs/DOCKER_DEPLOYMENT.md).
 | `Dockerfile`, `compose.yaml` | Container packaging |
 | `docs/` | Architecture, model audits, evaluations, and roadmap |
 
-The original `Employee_Burnout_and_Turnover_Prediction.ipynb`, `Project_app.py`, and older dashboards are retained for historical comparison; **`app.py` is the current entry point**. Original notebook metrics are not directly comparable with V2 due to differing data and evaluation choices.
+The original `Employee_Burnout_and_Turnover_Prediction.ipynb` is retained as a record of the initial modeling work. The legacy Streamlit apps and their saved model artifacts have been removed; **`app.py` is the current entry point**. Original notebook metrics are not directly comparable with V2 due to differing data and evaluation choices.
 
 ## What this project demonstrates
 
